@@ -9,8 +9,8 @@ def getReadingFrame(sequence,frame):
 
 # Read file name with type. Example bacterial1.fasta
 print("Enter file name: ")
-fileName=input()
-#fileName="bacterial1.fasta"
+#fileName=input()
+fileName="bacterial1.fasta"
 # Opens file and skips fasta header
 f=open(Directory+fileName,"r")
 f.readline()
@@ -23,6 +23,9 @@ f.close()
 complement_table=str.maketrans("ATGC", "TACG")
 complement=dnaSequence.translate(complement_table)
 reverseComplement=complement[::-1]
+
+# 3 Part of task
+filteredOrfRegions=[]
 
 # Makes all 6 reading frames
 for strand, seq in [("forward", dnaSequence), ("reverse", reverseComplement)]:
@@ -40,22 +43,34 @@ for strand, seq in [("forward", dnaSequence), ("reverse", reverseComplement)]:
             if codon in StopCodons:
                 stops.append(codonIndex)
 
+        # 1 Part of task
         for start in starts:
             for stop in stops:
                 if start<stop:
-                    orfRegions1Part.append((start,stop,".".join(readingFrame[start:stop+1])))
+                    orfRegions1Part.append((start,stop,"".join(readingFrame[start:stop+1])))
                     break
 
+        # 2 Part of task
         lastStop=-1
         for stop in stops:
             for start in starts:
                 if lastStop<start<stop:
-                    orfRegions2Part.append((start,stop,".".join(readingFrame[start:stop+1])))
+                    orfRegions2Part.append((start,stop,"".join(readingFrame[start:stop+1])))
                     break
             lastStop=stop
+
+        for orfRegion in orfRegions1Part:
+            if len(orfRegion[2])>=100:
+                filteredOrfRegions.append(orfRegion[2])
+
+        for orfRegion in orfRegions2Part:
+            if len(orfRegion[2])>=100:
+                filteredOrfRegions.append(orfRegion[2])
 
         print(f"{strand} frame {frame}: {readingFrame}")
         print(f"Start codons: {starts}")
         print(f"Stop codons: {stops}")
         print(f"ORF regions for 1 part: {orfRegions1Part}")
         print(f"ORF regions for 2 part: {orfRegions2Part}\n")
+
+print(f"Filtered ORF regions: {filteredOrfRegions}")
