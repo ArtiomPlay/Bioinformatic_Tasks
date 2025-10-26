@@ -1,4 +1,5 @@
 from textwrap import wrap
+from Bio.Seq import Seq
 
 StartCodon='ATG'
 StopCodons=['TAA','TAG','TGA']
@@ -73,4 +74,13 @@ for strand, seq in [("forward", dnaSequence), ("reverse", reverseComplement)]:
         print(f"ORF regions for 1 part: {orfRegions1Part}")
         print(f"ORF regions for 2 part: {orfRegions2Part}\n")
 
-print(f"Filtered ORF regions: {filteredOrfRegions}")
+print(f"Filtered ORF regions: {filteredOrfRegions}\n")
+
+# 4 Part of task
+proteinSeq=[]
+for orfRegion in filteredOrfRegions:
+    orf_seq=Seq(orfRegion)
+    protein_seq=orf_seq.translate(to_stop=True)
+    proteinSeq.append(str(protein_seq))
+
+print(f"Protein sequence: {proteinSeq}\n")
