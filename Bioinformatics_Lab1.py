@@ -4,83 +4,109 @@ from Bio.Seq import Seq
 StartCodon='ATG'
 StopCodons=['TAA','TAG','TGA']
 Directory="viruses/data/"
+Files=[
+    "bacterial1.fasta",
+    "bacterial2.fasta",
+    "bacterial3.fasta",
+    "bacterial4.fasta",
+    "mamalian1.fasta",
+    "mamalian2.fasta",
+    "mamalian3.fasta",
+    "mamalian4.fasta",
+]
+AminoAcids="ACDEFGHIKLMNPQRSTVWY"
 
 def getReadingFrame(sequence,frame):
     return wrap(sequence[frame:],width=3)
 
-# Read file name with type. Example bacterial1.fasta
-print("Enter file name: ")
-#fileName=input()
-fileName="bacterial1.fasta"
-# Opens file and skips fasta header
-f=open(Directory+fileName,"r")
-f.readline()
+allFrequencies=dict()
 
-# Reads rest file content, removes all new lines and closes file
-dnaSequence=f.read().replace("\n","")
-f.close()
+for file in Files:
+    # Opens file and skips fasta header
+    f=open(Directory+file,"r")
+    f.readline()
 
-# Makes reverse complement
-complement_table=str.maketrans("ATGC", "TACG")
-complement=dnaSequence.translate(complement_table)
-reverseComplement=complement[::-1]
+    # Reads rest file content, removes all new lines and closes file
+    dnaSequence=f.read().replace("\n","")
+    f.close()
 
-# 3 Part of task
-filteredOrfRegions=[]
+    # Makes reverse complement
+    complement_table=str.maketrans("ATGC","TACG")
+    complement=dnaSequence.translate(complement_table)
+    reverseComplement=complement[::-1]
 
-# Makes all 6 reading frames
-for strand, seq in [("forward", dnaSequence), ("reverse", reverseComplement)]:
-    for frame in range(3):
-        starts=[]
-        stops=[]
-        orfRegions1Part=[]
-        orfRegions2Part=[]
-        readingFrame=getReadingFrame(seq, frame)
+    # 3 Part of task
+    filteredOrfRegions=[]
 
-        # Searches for start codons in reading frame
-        for codonIndex,codon in enumerate(readingFrame):
-            if codon==StartCodon:
-                starts.append(codonIndex)
-            if codon in StopCodons:
-                stops.append(codonIndex)
+    # Makes all 6 reading frames
+    for strand,seq in [("forward",dnaSequence),("reverse",reverseComplement)]:
+        for frame in range(3):
+            starts=[]
+            stops=[]
+            orfRegions=[]
+            readingFrame=getReadingFrame(seq,frame)
 
-        # 1 Part of task
-        for start in starts:
-            for stop in stops:
-                if start<stop:
-                    orfRegions1Part.append((start,stop,"".join(readingFrame[start:stop+1])))
-                    break
+            # Searches for start and stop codons in reading frame
+            for codonIndex,codon in enumerate(readingFrame):
+                if codon==StartCodon:
+                    starts.append(codonIndex)
+                if codon in StopCodons:
+                    stops.append(codonIndex)
 
-        # 2 Part of task
-        lastStop=-1
-        for stop in stops:
+            # 1 Part of task
             for start in starts:
-                if lastStop<start<stop:
-                    orfRegions2Part.append((start,stop,"".join(readingFrame[start:stop+1])))
-                    break
-            lastStop=stop
+                for stop in stops:
+                    if start<stop:
+                        orfRegions.append((start,stop,"".join(readingFrame[start:stop+1])))
+                        break
 
-        for orfRegion in orfRegions1Part:
-            if len(orfRegion[2])>=100:
-                filteredOrfRegions.append(orfRegion[2])
+            # 2 Part of task
+            lastStop=-1
+            for stop in stops:
+                for start in starts:
+                    if lastStop<start<stop:
+                        orfRegions.append((start,stop,"".join(readingFrame[start:stop+1])))
+                        break
+                lastStop=stop
 
-        for orfRegion in orfRegions2Part:
-            if len(orfRegion[2])>=100:
-                filteredOrfRegions.append(orfRegion[2])
+            for orfRegion in orfRegions:
+                if len(orfRegion[2])>=100:
+                    filteredOrfRegions.append((strand,frame,orfRegion[2]))
 
-        print(f"{strand} frame {frame}: {readingFrame}")
-        print(f"Start codons: {starts}")
-        print(f"Stop codons: {stops}")
-        print(f"ORF regions for 1 part: {orfRegions1Part}")
-        print(f"ORF regions for 2 part: {orfRegions2Part}\n")
+    # 4 Part of task
+    proteinSeq=[]
+    for orfRegion in filteredOrfRegions:
+        orf_seq=Seq(orfRegion[2])
+        protein_seq=orf_seq.translate(to_stop=True)
+        proteinSeq.append((orfRegion[0],orfRegion[1],str(protein_seq)))
 
-print(f"Filtered ORF regions: {filteredOrfRegions}\n")
+    # 5 Part of task
+    # Codons
+    codons={a:0.0 for a in AminoAcids}
+    codonCount=0
+    for protein in proteinSeq:
+        codonCount=codonCount+len(protein[2])
+        for codon in protein[2]:
+            codons[codon]+=1
 
-# 4 Part of task
-proteinSeq=[]
-for orfRegion in filteredOrfRegions:
-    orf_seq=Seq(orfRegion)
-    protein_seq=orf_seq.translate(to_stop=True)
-    proteinSeq.append(str(protein_seq))
+    for codon in codons:
+        codons[codon]=codons[codon]/codonCount
 
-print(f"Protein sequence: {proteinSeq}\n")
+    # Dicodons
+    dicodons={a+b:0.0 for a in AminoAcids for b in AminoAcids}
+    dicodonCount=0
+    for proteinRegion in proteinSeq:
+        for i in range(0,len(proteinRegion[2])-1):
+            dicodon=proteinRegion[2][i]+proteinRegion[2][i+1]
+            dicodons[dicodon]+=1
+            dicodonCount=dicodonCount+1
+
+    for dicodon in dicodons:
+        dicodons[dicodon]=dicodons[dicodon]/dicodonCount
+
+    allFrequencies[file]={
+        "codons":codons,
+        "dicodons":dicodons
+    }
+
+print(allFrequencies)
