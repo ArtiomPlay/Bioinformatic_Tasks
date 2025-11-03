@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg width="1214" height="730" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g style="stroke:black;fill:lightgreen" transform="translate(30,30)">
+<line x1="532" y1="445" x2="532" y2="493" style="stroke:blue; stroke-width:1"/>
+<line x1="532" y1="493" x2="790" y2="493" style="stroke:blue; stroke-width:1"/>
+<line x1="532" y1="445" x2="532" y2="398" style="stroke:blue; stroke-width:1"/>
+<line x1="532" y1="398" x2="790" y2="398" style="stroke:blue; stroke-width:1"/>
+<line x1="274" y1="517" x2="274" y2="589" style="stroke:blue; stroke-width:1"/>
+<line x1="274" y1="589" x2="532" y2="589" style="stroke:blue; stroke-width:1"/>
+<line x1="16" y1="515" x2="16" y2="684" style="stroke:blue; stroke-width:1"/>
+<line x1="16" y1="684" x2="274" y2="684" style="stroke:blue; stroke-width:1"/>
+<line x1="790" y1="64" x2="790" y2="111" style="stroke:blue; stroke-width:1"/>
+<line x1="790" y1="111" x2="1048" y2="111" style="stroke:blue; stroke-width:1"/>
+<line x1="790" y1="64" x2="790" y2="16" style="stroke:blue; stroke-width:1"/>
+<line x1="790" y1="16" x2="1048" y2="16" style="stroke:blue; stroke-width:1"/>
+<line x1="532" y1="135" x2="532" y2="207" style="stroke:blue; stroke-width:1"/>
+<line x1="532" y1="207" x2="790" y2="207" style="stroke:blue; stroke-width:1"/>
+<line x1="274" y1="219" x2="274" y2="302" style="stroke:blue; stroke-width:1"/>
+<line x1="274" y1="302" x2="532" y2="302" style="stroke:blue; stroke-width:1"/>
+<line x1="274" y1="517" x2="274" y2="445" style="stroke:blue; stroke-width:1"/>
+<line x1="274" y1="445" x2="532" y2="445" style="stroke:blue; stroke-width:1"/>
+<line x1="16" y1="515" x2="16" y2="517" style="stroke:blue; stroke-width:1"/>
+<line x1="16" y1="517" x2="274" y2="517" style="stroke:blue; stroke-width:1"/>
+<line x1="532" y1="135" x2="532" y2="64" style="stroke:blue; stroke-width:1"/>
+<line x1="532" y1="64" x2="790" y2="64" style="stroke:blue; stroke-width:1"/>
+<line x1="274" y1="219" x2="274" y2="135" style="stroke:blue; stroke-width:1"/>
+<line x1="274" y1="135" x2="532" y2="135" style="stroke:blue; stroke-width:1"/>
+<line x1="16" y1="515" x2="16" y2="219" style="stroke:blue; stroke-width:1"/>
+<line x1="16" y1="219" x2="274" y2="219" style="stroke:blue; stroke-width:1"/>
+<text x="278" y="691" font-weight = "10" font-family="verdana" fill="black" font-size="18">bacterial3</text>
+<text x="536" y="596" font-weight = "10" font-family="verdana" fill="black" font-size="18">bacterial1</text>
+<text x="794" y="500" font-weight = "10" font-family="verdana" fill="black" font-size="18">bacterial4</text>
+<text x="794" y="405" font-weight = "10" font-family="verdana" fill="black" font-size="18">mamalian3</text>
+<text x="536" y="309" font-weight = "10" font-family="verdana" fill="black" font-size="18">mamalian1</text>
+<text x="794" y="214" font-weight = "10" font-family="verdana" fill="black" font-size="18">bacterial2</text>
+<text x="1052" y="118" font-weight = "10" font-family="verdana" fill="black" font-size="18">mamalian2</text>
+<text x="1052" y="23" font-weight = "10" font-family="verdana" fill="black" font-size="18">mamalian4</text>
+</g></svg>

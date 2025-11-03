@@ -1,3 +1,4 @@
+import math
 from textwrap import wrap
 from Bio.Seq import Seq
 
@@ -18,6 +19,12 @@ AminoAcids="ACDEFGHIKLMNPQRSTVWY"
 
 def getReadingFrame(sequence,frame):
     return wrap(sequence[frame:],width=3)
+
+def cosineDistance(vecA,vecB):
+    dot=sum(vecA[k]*vecB[k] for k in vecA.keys())
+    magnA=math.sqrt(sum(v**2 for v in vecA.values()))
+    magnB=math.sqrt(sum(v**2 for v in vecB.values()))
+    return 1-(dot/(magnA*magnB))
 
 allFrequencies=dict()
 
@@ -104,9 +111,34 @@ for file in Files:
     for dicodon in dicodons:
         dicodons[dicodon]=dicodons[dicodon]/dicodonCount
 
-    allFrequencies[file]={
+    allFrequencies[file.split(".")[0]]={
         "codons":codons,
         "dicodons":dicodons
     }
 
-print(allFrequencies)
+for frequency in allFrequencies:
+    print(allFrequencies[frequency])
+
+with open("CodonDistanceMatrix.txt","w") as f:
+    f.write(f"{len(allFrequencies)}")
+
+    for file1 in allFrequencies:
+        f.write(f"\n{file1}")
+
+        for file2 in allFrequencies:
+            dist=max(0.0,cosineDistance(allFrequencies[file1]["codons"],allFrequencies[file2]["codons"]))
+            f.write(" %.3f" % round(dist,3))
+
+    f.close()
+
+with open("DicodonDistanceMatrix.txt","w") as f:
+    f.write(f"{len(allFrequencies)}")
+
+    for file1 in allFrequencies:
+        f.write(f"\n{file1}")
+
+        for file2 in allFrequencies:
+            dist=max(0.0,cosineDistance(allFrequencies[file1]["dicodons"],allFrequencies[file2]["dicodons"]))
+            f.write(" %.3f" % round(dist,3))
+
+    f.close()
